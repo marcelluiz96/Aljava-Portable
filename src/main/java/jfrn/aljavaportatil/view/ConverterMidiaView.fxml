@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../../../resources/css/style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfrn.aljavaportatil.view.ConverterMidiaController">
+  <tabs>
+    <Tab text="Etapa 1 - Origem e Destino">
+         <content>
+            <AnchorPane prefHeight="562.0" prefWidth="768.0" stylesheets="@../../../resources/css/style.css">
+               <children>
+                  <Label layoutX="293.0" layoutY="18.0" styleClass="title" text="Conversão de áudio/vídeo">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btEscolherArquivos" layoutX="14.0" layoutY="105.0" mnemonicParsing="false" onAction="#actionEscolherArquivos" prefHeight="25.0" prefWidth="177.0" styleClass="enviarbt" text="Escolher arquivo(s)...">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="7.0" layoutY="58.0" prefHeight="44.0" prefWidth="548.0" text="1. Escolha um arquivo ou mais arquivos que deseja converter" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="257.0">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="283.0">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="tvMidiasAConverter" layoutX="5.0" layoutY="156.0" prefHeight="318.0" prefWidth="887.0">
+                    <columns>
+                      <TableColumn fx:id="colNome" prefWidth="250.0" text="Nome" />
+                      <TableColumn fx:id="colCaminho" prefWidth="264.0" text="Caminho" />
+                        <TableColumn fx:id="colTamanho" prefWidth="87.0" text="Tamanho" />
+                        <TableColumn fx:id="colDuracao" prefWidth="91.0" text="Duração" />
+                        <TableColumn fx:id="colResolucao" prefWidth="253.0" text="Resolução" />
+                        <TableColumn fx:id="colTipo" prefWidth="253.0" text="Tipo" />
+                        <TableColumn fx:id="colAcoes" prefWidth="20.0" text="Ações" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <Label fx:id="lbFormatosCompativeis" layoutX="203.0" layoutY="100.0" prefHeight="55.0" prefWidth="697.0" text="webm, mkv, flv, f4v, vob, ogv, ogg, gif, avi, mov, wmv, yuv, rm, rmvb, asf, amv, m4p, m4v, mpg, mp2, mpeg, mpe, mpv, m2v, m4v, svi, 3gp, 3g2, mxf, roq, nsv, flv, f4v, f4p, f4a, f4b" wrapText="true">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="202.0" layoutY="92.0" text="Formatos compatíveis:">
+                     <font>
+                        <Font name="System Italic" size="17.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btEscolherArquivos2" layoutX="373.0" layoutY="504.0" mnemonicParsing="false" onAction="#actionProximaEtapa" prefHeight="32.0" prefWidth="156.0" styleClass="proximaetapabt" text="Próxima Etapa">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btVoltarMenuInicial" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#actionVoltarMenuInicial" prefHeight="27.0" prefWidth="137.0" styleClass="bluebt" text="Voltar ao menu inicial">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font></Button>
+               </children>
+            </AnchorPane>
+         </content></Tab>
+    <Tab text="Etapa 2 - Confirmar arquivos">
+         <content>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="txOutputPath" layoutX="168.0" layoutY="128.0" prefHeight="30.0" prefWidth="466.0" />
+                  <Label layoutX="15.0" layoutY="132.0" text="Caminho de destino:">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btEscolherArquivos1" layoutX="644.0" layoutY="128.0" mnemonicParsing="false" onAction="#actionEscolherDestino" prefHeight="30.0" prefWidth="157.0" styleClass="bluebt" text="Escolher destino...">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <CheckBox fx:id="cbSalvarCaminhoPadrao" layoutX="18.0" layoutY="169.0" mnemonicParsing="false" onAction="#actionSalvarCaminhoPadrao" text="Salvar no caminho padrão: Meus documentos/aljava-portatil/&lt;dia-mes-ano&gt;/">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
+                  <Button fx:id="btIniciarConversao" layoutX="355.0" layoutY="496.0" mnemonicParsing="false" onAction="#actionIniciarConversao" prefHeight="38.0" prefWidth="190.0" styleClass="greenbt" text="Iniciar conversão">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="105.0" layoutY="540.0" text="Nota: Após iniciar a conversão, não feche o programa. Se necessário, delete os arquivos convertidos e reinicie a conversão.">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="77.0" prefHeight="44.0" prefWidth="548.0" text="2. Escolha onde os arquivos convertidos serão salvos" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btVoltarMenuInicial1" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#actionVoltarMenuInicial" prefHeight="27.0" prefWidth="137.0" styleClass="bluebt" text="Voltar ao menu inicial">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </content></Tab>
+      <Tab text="Etapa 3 - Conversão">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ProgressBar fx:id="pbProgressoConversao" layoutX="137.0" layoutY="128.0" prefHeight="38.0" prefWidth="614.0" progress="0.0" />
+                  <Label layoutX="315.0" layoutY="23.0" text="STATUS DA CONVERSÃO">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="12.0" layoutY="342.0" text="Informações do conversor:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbTempoTotalArquivos" layoutX="702.0" layoutY="107.0" text="00:00:00">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="580.0" layoutY="108.0" text="Duração das mídias:" />
+                  <Label layoutX="374.0" layoutY="166.0" text="Arquivo atual: ">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="138.0" layoutY="106.0" text="PROGRESSO GERAL:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="137.0" layoutY="314.0" text="Nome do arquivo atual:">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbNomeArquivoAtual" layoutX="324.0" layoutY="314.0" text="Nome do meu arquivo de origem">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbArquivoAtual" layoutX="470.0" layoutY="166.0" text="1 de 12">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <ProgressBar fx:id="pbProgressoConversaoArquivoAtual" layoutX="138.0" layoutY="246.0" prefHeight="38.0" prefWidth="617.0" progress="0.0" />
+                  <Label layoutX="138.0" layoutY="226.0" text="PROGRESSO DO ARQUIVO ATUAL:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbTempoAtualArquivoAtual" layoutX="368.0" layoutY="286.0" text="00:00:00">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbTempoTotalArquivoAtual" layoutX="470.0" layoutY="286.0" text="00:00:00">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="444.0" layoutY="286.0" text="/" />
+                  <Button fx:id="btVoltarMenuInicial2" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#actionVoltarMenuInicial" prefHeight="27.0" prefWidth="137.0" styleClass="bluebt" text="Voltar ao menu inicial">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btAbrirLocalArquivos" layoutX="337.0" layoutY="488.0" mnemonicParsing="false" onAction="#actionAbrirLocalArquivos" prefHeight="56.0" prefWidth="204.0" styleClass="bluebt" text="Abrir local dos arquivos">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="lbConversaoConcluida" layoutX="312.0" layoutY="439.0" text="Conversão concluída!" textFill="#53bf59">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbBitRate" layoutX="13.0" layoutY="384.0" text="Bitrate:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbDrop" layoutX="13.0" layoutY="405.0" text="Drop:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbSpeed" layoutX="13.0" layoutY="426.0" text="Speed:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbSize" layoutX="13.0" layoutY="363.0" text="Size:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>

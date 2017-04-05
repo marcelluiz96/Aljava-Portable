@@ -1,0 +1,63 @@
+.whitebg {
+	-fx-background-image: url("../images/whitebg.jpg");
+	-fx-background-repeat: no-repeat;
+}
+
+#tvMidiasAConverter .table-column {
+  -fx-alignment: CENTER;
+}
+
+.title {
+
+}
+
+.enviarbt {
+	-fx-background-color: #ef5416;
+	-fx-text-fill: #FFF;
+	-fx-background-radius: 0.2em;
+}
+
+.enviarbt:pressed{
+    -fx-background-color: #8a2e0a;
+	-fx-text-fill: #EEE;
+	-fx-background-radius: 0.2em;
+ }
+
+ .button:hover { 
+    // Your new css
+}
+
+.proximaetapabt {
+	-fx-background-color: #0288d1;
+	-fx-text-fill: #FFF;
+    -fx-background-radius: 0.2em;
+}
+
+.converterbt {
+	-fx-background-image: url("../icons/videoediting100.png");
+	-fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.assinarbt {
+	-fx-background-image: url("../icons/autograph100.png");
+	-fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.comprimirbt {
+	-fx-background-image: url("../icons/pdf100.png");
+	-fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.bluebt {
+	-fx-background-color: #0288d1;
+	-fx-text-fill: #FFF;
+}
+
+.greenbt {
+	-fx-background-color: #66BB6A;
+	-fx-text-fill: #FFF;
+
+}
