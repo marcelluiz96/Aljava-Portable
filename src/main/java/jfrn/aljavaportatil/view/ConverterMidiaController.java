@@ -74,7 +74,7 @@ public class ConverterMidiaController implements Initializable {
 	//			+ "*.asf, *.amv, *.m4p, *.m4v, *.mpg, *.mp2, *.mpeg, *.mpe, *.mpv, *.m2v, \n"
 	//			+ "*.m4v, *.svi, *.3gp, *.3g2, *.mxf, *.roq, *.nsv, *.flv, *.f4v, *.f4p, *.f4a, *.f4b";
 
-	private final List<String> formatosAudioCompativeis = new ArrayList<String>(Arrays.asList("mp3", "wav", "aac", "aac",
+	private final List<String> formatosAudioCompativeis = new ArrayList<String>(Arrays.asList("mp3", "wav", "aac",
 			"flac", "wav", "wma", "ogg"));
 	private final List<String> formatosVideoCompativeis = new ArrayList<String>(Arrays.asList("mp4", "webm", "mkv", "flv"
 			, "vob", "mov", "avi", "wmv", "m4p", "3gp", "mpeg"));
@@ -191,7 +191,7 @@ public class ConverterMidiaController implements Initializable {
 	}
 
 	@FXML 
-	private void actionEscolherArquivos() throws IOException {
+	private void actionEscolherArquivos() {
 		FileChooser fileChooser = new FileChooser();
 
 		fileChooser.setTitle("Escolha o arquivo");
@@ -199,9 +199,13 @@ public class ConverterMidiaController implements Initializable {
 		formatosPermitidos.addAll(formatosVideoCompativeis);
 		formatosPermitidos.addAll(formatosAudioCompativeis);
 
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Formatos permitidos: ("+String.join(", ", formatosPermitidos)+")", "*.mp4", "*.webm", "*.mkv", "*.flv"
-				, "*.vob", "*.mov", "*.avi", "*.wmv", "*.m4p", "*.3gp", "*.mpeg", "*.mp3", "*.wav", "*.aac", "*.aac",
-				"*.flac", "*.wav", "*.wma", "*.ogg"); 
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Áudio/Vídeo: ("+String.join(", ", formatosPermitidos)+")"
+				, "*.mp4", "*.webm", "*.mkv", "*.flv"
+				, "*.vob", "*.mov", "*.avi", "*.wmv"
+				,"*.m4p", "*.3gp", "*.mpeg", "*.mp3"
+				, "*.wav", "*.aac","*.flac", "*.wav"
+				, "*.wma", "*.ogg"); 
+
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		List<File> arquivosEscolhidos = fileChooser.showOpenMultipleDialog(btEscolherArquivos.getScene().getWindow()); 
@@ -209,13 +213,18 @@ public class ConverterMidiaController implements Initializable {
 		if (arquivosEscolhidos != null) {
 			MediaInformationProvider mediaInfoProvider = new MediaInformationProvider();
 			for (File midia : arquivosEscolhidos) {
-				converterMidiaApp.getMidiasAConverter().add(new Midia (midia.getName(),
-						midia.getAbsolutePath(),
-						MediaInformationProvider.bytesToMB(midia.length()) + " Mb",
-						mediaInfoProvider.getMediaDuration(midia),
-						mediaInfoProvider.getMediaResolutionAsString(midia),
-						mediaInfoProvider.getFileType(midia),
-						midia));
+				try {
+					converterMidiaApp.getMidiasAConverter().add(new Midia (midia.getName(),
+							midia.getAbsolutePath(),
+							MediaInformationProvider.bytesToMB(midia.length()) + " Mb",
+							mediaInfoProvider.getMediaDuration(midia),
+							mediaInfoProvider.getMediaResolutionAsString(midia),
+							MediaInformationProvider.getFileType(midia),
+							midia));
+				} catch (IOException e) {
+
+					e.printStackTrace();
+				}
 			}
 			tvMidiasAConverter.setItems(converterMidiaApp.getMidiasAConverter());
 		}
@@ -265,7 +274,7 @@ public class ConverterMidiaController implements Initializable {
 		this.tabPane.getSelectionModel().selectNext();
 		ffmpegWrapper = new FFMpegWrapper();
 		ffprobeWrapper = new FFProbeWrapper();
-		computeTotalTime();
+		computarTempoTotalConversao();
 		ProgressListener progressListener = createProgressListener();
 		DirectoryUtils.createDirIfNonExistant(txOutputPath.getText());
 
@@ -290,12 +299,10 @@ public class ConverterMidiaController implements Initializable {
 	private void onConversaoConcluida() {
 		pbProgressoConversao.setProgress(1);
 		pbProgressoConversaoArquivoAtual.setProgress(1);
-		
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Informação");
-		alert.setHeaderText("Conversão concluída");
-		alert.setContentText("A conversão foi concluída com sucesso!");
-		alert.showAndWait();
+
+		showDialog(AlertType.INFORMATION, 
+				"Conversão concluída", 
+				"A conversão foi concluída com sucesso");
 
 		tabPane.getTabs().get(0).setDisable(true);
 		tabPane.getTabs().get(1).setDisable(true);
@@ -304,22 +311,21 @@ public class ConverterMidiaController implements Initializable {
 	}
 
 	private void onErroConversao() {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Erro na conversão");
-		alert.setHeaderText("Ocorreu um erro durante a conversão do arquivo " 
-				+ getArquivosAConverter().get(currentFile - 1).getName());
-
-		String message = new String();
+		String fileConversionStatus = new String();
 		for (int i = 0; i < getArquivosAConverter().size(); i++) {
 			if (i < currentFile - 1) {
-				message.concat("Convertido: " + getArquivosAConverter().get(i).getName() + "\n");
+				fileConversionStatus.concat("Convertido: " + getArquivosAConverter().get(i).getName() + "\n");
 			} else {
-				message.concat("NÃO convertido: " + getArquivosAConverter().get(i).getName() + "\n");
+				fileConversionStatus.concat("NÃO convertido: " + getArquivosAConverter().get(i).getName() + "\n");
 			}
 		}
 
+		showDialog(AlertType.ERROR,
+				"Ocorreu um erro durante a conversão do arquivo " 
+						+ getArquivosAConverter().get(currentFile - 1).getName()
+						,fileConversionStatus
+				);
 
-		alert.showAndWait();
 	}
 
 	private void updateProgressBars(String time) {
@@ -342,13 +348,23 @@ public class ConverterMidiaController implements Initializable {
 	}
 
 	@FXML
-	private void actionAbrirLocalArquivos() throws Exception {
+	private void actionAbrirLocalArquivos() {
 
-		Runtime.getRuntime().exec("explorer.exe /root," + txOutputPath.getText());
-
-		new IntroductionApp().start(new Stage());
-		Stage stage = (Stage) txOutputPath.getScene().getWindow();
-		stage.close();
+		try {
+			Runtime.getRuntime().exec("explorer.exe /root," + txOutputPath.getText());
+			new IntroductionApp().start(new Stage());
+			Stage stage = (Stage) txOutputPath.getScene().getWindow();
+			stage.close();
+		} catch (IOException e) {
+			showDialog(AlertType.ERROR, "Erro ao tentar abrir local do arquivo",
+					"Não foi possível abrir o local do arquivo. Por favor, verifique se o caminho"
+					+ "realmente existe");
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			showDialog(AlertType.ERROR, "Erro ao voltar ao menu inicial",
+					"Por favor, reinicie o programa e verifique se o problema persiste.");
+		}
 	}
 
 	@FXML
@@ -369,31 +385,7 @@ public class ConverterMidiaController implements Initializable {
 		}
 	}
 
-	/**
-	 * Substituido pelos métodos converterVideo e converterAudio da classe ffmpegWrapper
-	 * @param params
-	 * @throws IOException
-	 */
-	@Deprecated
-	private void handlerConversao(ArrayList<String> params) throws IOException {
-
-		ProcessBuilder pb = new ProcessBuilder(params);
-		Process ffmpeg = pb.start();
-
-		InputStream ffmpegErrorStream = ffmpeg.getErrorStream();
-		InputStream ffmpegInputStream = ffmpeg.getInputStream();
-		OutputStream ffmpegOutputStream = ffmpeg.getOutputStream();
-
-		BufferedReader reader = new BufferedReader(new InputStreamReader(ffmpegErrorStream));
-		String line;
-		while ((line = reader.readLine()) != null) {
-			System.out.println(line);
-		}
-
-
-	}
-
-	private void computeTotalTime() {
+	private void computarTempoTotalConversao() {
 		int totalTime = 0;
 		for(File midia : getArquivosAConverter()) {
 			totalTime += ffprobeWrapper.getMediaDurationInSeconds(midia);
@@ -489,23 +481,23 @@ public class ConverterMidiaController implements Initializable {
 			}
 			//TODO Substituir por uma chave encriptada baseada em alguma propriedade do arquivo
 			id3v1Tag.setComment("convertido");
-			
+
 			String originalFilePath = convertedFile.getAbsolutePath();
 			String destinyFilePath = FilenameUtils.removeExtension(originalFilePath) + " processado.mp3";
-			
+
 			mp3File.save(destinyFilePath);
 			convertedFile.delete();
 			File finalFile = new File(destinyFilePath);
 			finalFile.renameTo(convertedFile);
-			
-			
-//			String pathToMp3File = file.getParent() + "tempFile.mp3";
-//			mp3File.save(pathToMp3File);
-//			
-//			String pathToDestinyFile = file.getAbsolutePath();
-//			file.delete();
-//			
-//			FileUtils.copyFileToDirectory(new File(pathToMp3File), new File(pathToDestinyFile), true);
+
+
+			//			String pathToMp3File = file.getParent() + "tempFile.mp3";
+			//			mp3File.save(pathToMp3File);
+			//			
+			//			String pathToDestinyFile = file.getAbsolutePath();
+			//			file.delete();
+			//			
+			//			FileUtils.copyFileToDirectory(new File(pathToMp3File), new File(pathToDestinyFile), true);
 		} catch (UnsupportedTagException | InvalidDataException | IOException | NotSupportedException e) {
 			e.printStackTrace();
 		}
@@ -600,6 +592,28 @@ public class ConverterMidiaController implements Initializable {
 				return cell;
 			}
 		};
+	}
+
+	public void showDialog(AlertType type, String header, String content) {
+		Alert alert = new Alert(type);
+
+		switch (type) {
+		case ERROR:
+			alert.setTitle("Erro");
+			break;
+		case INFORMATION:
+			alert.setTitle("Informação");
+			break;
+		case CONFIRMATION:
+			alert.setTitle("Sucesso");
+			break;
+		case WARNING:
+			alert.setTitle("Aviso");
+			break;
+		}
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		alert.showAndWait();
 	}
 
 	public File getUserDirectory() {
