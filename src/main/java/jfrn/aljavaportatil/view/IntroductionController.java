@@ -22,8 +22,6 @@ public class IntroductionController implements Initializable{
 	@FXML private AnchorPane anchorPane;
 
 	@FXML Button btConverterAudioVideo;
-	@FXML Button btComprimirPdf;
-	@FXML Button btAssinarPdf;
 
 	@FXML
 	public void initialize() {
@@ -79,22 +77,6 @@ public class IntroductionController implements Initializable{
 
 	public void setBtConverterAudioVideo(Button btConverterAudioVideo) {
 		this.btConverterAudioVideo = btConverterAudioVideo;
-	}
-
-	public Button getBtComprimirPdf() {
-		return btComprimirPdf;
-	}
-
-	public void setBtComprimirPdf(Button btComprimirPdf) {
-		this.btComprimirPdf = btComprimirPdf;
-	}
-
-	public Button getBtAssinarPdf() {
-		return btAssinarPdf;
-	}
-
-	public void setBtAssinarPdf(Button btAssinarPdf) {
-		this.btAssinarPdf = btAssinarPdf;
 	}
 
 
