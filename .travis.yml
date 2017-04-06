@@ -1,7 +1,9 @@
 language: java
 
-jdk: - oraclejdk8
+jdk: 
+  - oraclejdk8
 
-os: - windows
+os: 
+  - windows
 
 script: mvn clean verify
