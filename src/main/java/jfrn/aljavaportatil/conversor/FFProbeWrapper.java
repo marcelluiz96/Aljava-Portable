@@ -70,7 +70,7 @@ public class FFProbeWrapper {
 	 * @return
 	 * @throws IOException 
 	 */
-	public int[] getMediaResolutionAsArray(File midia) throws IOException {
+	public int[] getMediaResolutionAsArray(File midia)  {
 		ArrayList<String> params = new ArrayList<String>();
 		int[] resolution = new int[2];
 
@@ -83,17 +83,22 @@ public class FFProbeWrapper {
 		params.add("default=nokey=1:noprint_wrappers=1");
 		params.add(midia.getAbsolutePath());
 
-		ProcessBuilder pb = new ProcessBuilder(params);
-		Process ffprobe = pb.start();
+		try {
+			ProcessBuilder pb = new ProcessBuilder(params);
+			Process ffprobe = pb.start();
+			InputStream ffprobeErrorStream = ffprobe.getInputStream();
 
-		InputStream ffprobeErrorStream = ffprobe.getInputStream();
-
-		BufferedReader reader = new BufferedReader(new InputStreamReader(ffprobeErrorStream));
-		String line;
-		for (int pos = 0; (line = reader.readLine()) != null; pos++) {
-			resolution[pos] = Integer.valueOf(line);
-			if (pos == 1) //Pode gerar problemas em raros casos em que vídeos que possuem múltiplos streams (I.E um stream a 480p e outro a 1080p. Torna-se impossível saber a resolução real)
-				break;
+			BufferedReader reader = new BufferedReader(new InputStreamReader(ffprobeErrorStream));
+			String line;
+			for (int pos = 0; (line = reader.readLine()) != null; pos++) {
+				resolution[pos] = Integer.valueOf(line);
+				if (pos == 1) //Pode gerar problemas em raros casos em que vídeos que possuem múltiplos streams (I.E um stream a 480p e outro a 1080p. Torna-se impossível saber a resolução real)
+					break;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			resolution[0] = 0;
+			resolution[1] = 0;
 		}
 
 		return resolution;

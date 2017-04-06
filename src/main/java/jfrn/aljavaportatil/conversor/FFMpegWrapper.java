@@ -25,6 +25,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
 import jfrn.aljavaportatil.utils.NumberUtils;
+import jfrn.aljavaportatil.utils.StringUtils;
 import jfrn.aljavaportatil.utils.TaskContainer;
 
 
@@ -33,6 +34,7 @@ public class FFMpegWrapper {
 	private String pathToFFMpeg;
 	private static int TOLERANCE_TO_NULLS = 10;
 	boolean isComplete = false;
+	ProgressListener progressListener;
 	Process ffmpeg;
 	InputStream ffmpegErrorStream;
 	BufferedReader errorStreamReader;
@@ -50,72 +52,91 @@ public class FFMpegWrapper {
 		this.pathToFFMpeg = "src/main/ffmpeg/ffmpeg";
 	}
 
-	public void converterMidia(ArrayList<String> params, ProgressListener progressListener) throws IOException, InterruptedException, ExecutionException, TimeoutException {
-		//				ProcessBuilder pb = new ProcessBuilder(params);
-		//				Process ffmpeg = pb.start();
 
-		int paramsSize = params.size();
-		String[] cmd = new String[paramsSize];
+	//throws IOException, InterruptedException, ExecutionException, TimeoutException
+	public void converterMidia(ArrayList<String> params, ProgressListener progressListener)  {
+		this.progressListener = progressListener;
+		String[] parameters = StringUtils.stringListToArray(params);
 
-		for (int i = 0; i < paramsSize; i++) 
-		{
-			cmd[i] = params.get(i);
+		try {
+			executeFFmpeg(parameters);
+
+			initializeFFmpegStreams();
+
+			readFFmpegStream();
+
+			if (isComplete) {
+				//Enviando o último parâmetro, que é o caminho absoluto para o arquivo
+				progressListener.progress(100);
+				progressListener.complete(params.get(params.size() - 1)); 
+			} else {
+				progressListener.error();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
 
+	private void executeFFmpeg(String[] parameters) throws IOException {
 		Runtime runtime = Runtime.getRuntime();
-		ffmpeg = runtime.exec(cmd); //CONVERSÃO COMEÇA AQUI
-
-		ffmpegErrorStream = ffmpeg.getErrorStream();
-		errorStreamReader = new BufferedReader(new InputStreamReader(ffmpegErrorStream));
-		ffmpegOutputStream = ffmpeg.getOutputStream();
+		ffmpeg = runtime.exec(parameters); //CONVERSÃO COMEÇA AQUI
 
 		ProcessKiller ffmpegKiller = new ProcessKiller(ffmpeg);
 		runtime.addShutdownHook(ffmpegKiller);
+	}
 
-		//		ffmpegInputStream = ffmpeg.getInputStream();
-		//		ffmpegOutputStream = ffmpeg.getOutputStream();
+	private void initializeFFmpegStreams() {
 		ffmpegErrorStream = ffmpeg.getErrorStream();
+		errorStreamReader = new BufferedReader(new InputStreamReader(ffmpegErrorStream));
+		ffmpegOutputStream = ffmpeg.getOutputStream();
+	}
 
-
+	private void readFFmpegStream() {
 		String lineContent;
 		int currentNullAmount = 0;
 		int currLine = 0;
 
-
 		for (currLine = 0; true; currLine++) {
-			System.out.println("for  "+ currLine);
-			ExecutorService executor = Executors.newSingleThreadExecutor();
-			Future<String> future = executor.submit(new TaskContainer(errorStreamReader));
-			lineContent = future.get(3, TimeUnit.SECONDS);
+			try {
+				System.out.println("for  "+ currLine);
+				ExecutorService executor = Executors.newSingleThreadExecutor();
+				Future<String> future = executor.submit(new TaskContainer(errorStreamReader));
 
-			if (lineContent == null || lineContent.isEmpty()) {
-				ffmpegOutputStream.write(new String("A").getBytes()); //Escrevendo algo para o ffmpeg destravar (resolvendo caso raro)
-				currentNullAmount +=1;
+				lineContent = future.get(3, TimeUnit.SECONDS);
 
-				if(!ffmpeg.isAlive()) {
-					isComplete = true;
-					break;
+
+				if (lineContent == null || lineContent.isEmpty()) {
+					ffmpegOutputStream.write(new String("A").getBytes()); //Escrevendo algo para o ffmpeg destravar (resolvendo caso raro)
+					currentNullAmount +=1;
+
+					if(!ffmpeg.isAlive()) {
+						isComplete = true;
+						break;
+					}
+
+					if (currentNullAmount >= TOLERANCE_TO_NULLS) {
+						isComplete = false;
+						ffmpeg.destroy();
+						break;
+					}
+
+				} else {
+					currentNullAmount = 0;
+					System.out.println(lineContent);
+					progressListener.message(lineContent);
 				}
-
+			} catch (InterruptedException | ExecutionException | TimeoutException e) {
+				e.printStackTrace();
+				currentNullAmount +=1;
 				if (currentNullAmount >= TOLERANCE_TO_NULLS) {
 					isComplete = false;
 					ffmpeg.destroy();
 					break;
 				}
-
-			} else {
-				currentNullAmount = 0;
-				System.out.println(lineContent);
-				progressListener.message(lineContent);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		}
-
-		if (isComplete) {
-			//Enviando o último parâmetro, que é o caminho absoluto para o arquivo
-			progressListener.progress(100);
-			progressListener.complete(params.get(params.size() - 1)); 
-		} else {
-			progressListener.error();
 		}
 	}
 
@@ -210,7 +231,6 @@ public class FFMpegWrapper {
 			errorStreamReader.close();
 			ffmpeg.destroyForcibly();
 		}
-
 	}
 
 }

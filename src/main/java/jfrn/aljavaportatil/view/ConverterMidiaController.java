@@ -405,7 +405,7 @@ public class ConverterMidiaController implements Initializable {
 		lbArquivoAtual.setText(currentFile + " de " + getArquivosAConverter().size());
 	}
 
-	private void handleConversao(Midia midiaAtual, ProgressListener progressListener) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+	private void handleConversao(Midia midiaAtual, ProgressListener progressListener) {
 		File arquivoConversaoAtual = new File(midiaAtual.getCaminho().get());
 		int[] resolution = ffprobeWrapper.getMediaResolutionAsArray(arquivoConversaoAtual);
 
@@ -428,8 +428,10 @@ public class ConverterMidiaController implements Initializable {
 
 		if (!params.isEmpty())
 			ffmpegWrapper.converterMidia(params, progressListener);
-
-		else throw new IOException ("Formato de arquivo não válido");
+		else {
+			showDialog(AlertType.ERROR, "Não foi possível construir os parâmetros da conversão",
+					"Favor contatar a seção de sistemas do NTI - JFRN para apuração do problema.");
+		}
 	}
 
 	private ProgressListener createProgressListener() {
