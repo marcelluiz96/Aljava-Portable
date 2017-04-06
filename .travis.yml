@@ -1,6 +1,4 @@
 language: java
-mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-mvn test -B
 
 jdk:
   - oraclejdk8
@@ -8,3 +6,11 @@ jdk:
 
 os:
   - windows
+
+script:
+  mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  mvn test -B
+
+branches:
+  only:
+  - master
