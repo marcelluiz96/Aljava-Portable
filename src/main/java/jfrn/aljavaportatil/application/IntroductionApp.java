@@ -22,7 +22,7 @@ public class IntroductionApp extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		stage = primaryStage;
-		stage.setTitle("Utilitário portátil Aljava - JFRN v1.0");
+		stage.setTitle("Aljava Portátil - JFRN v1.0");
 		stage.setResizable(false);
 		
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {

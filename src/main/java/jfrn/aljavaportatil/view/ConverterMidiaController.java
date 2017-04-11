@@ -53,6 +53,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -89,6 +90,9 @@ public class ConverterMidiaController implements Initializable {
 	private File caminhoDestino; //Caminho do destino 
 	private List<Integer> duracaoInputs; //Utilizado para calcular o progresso real dado tempo do video atual / total de tempo dos videos
 
+	@FXML private TabPane tabPane;
+	@FXML private HBox hbChooseOutputPath;
+	
 	@FXML private CheckBox cbSalvarCaminhoPadrao;
 	@FXML private Button btEscolherArquivos;
 	@FXML private Button btIniciarConversao;
@@ -108,7 +112,6 @@ public class ConverterMidiaController implements Initializable {
 	@FXML private ProgressBar pbProgressoConversao;
 	@FXML private ProgressBar pbProgressoConversaoArquivoAtual;
 	@FXML private Label lbFormatosCompativeis;
-	@FXML private Label lbConversaoConcluida;
 	@FXML private Label lbNomeArquivoAtual;
 	@FXML private Label lbArquivoAtual;
 	@FXML private Label lbTempoTotalArquivos;
@@ -126,8 +129,6 @@ public class ConverterMidiaController implements Initializable {
 	@FXML private TableColumn<Midia, String> colTipo;
 	@FXML private TableColumn<Midia, String> colAcoes;
 
-	@FXML private TabPane tabPane;
-
 	private String previousOutputPath;
 
 
@@ -140,7 +141,6 @@ public class ConverterMidiaController implements Initializable {
 	}
 
 	private void configureView() {
-		lbConversaoConcluida.setVisible(false);
 		btAbrirLocalArquivos.setVisible(false);
 		lbFormatosCompativeis.setText("Vídeo: "+ formatosVideoCompativeis
 				+ "\n Áudio: " + formatosAudioCompativeis);
@@ -306,7 +306,6 @@ public class ConverterMidiaController implements Initializable {
 
 		tabPane.getTabs().get(0).setDisable(true);
 		tabPane.getTabs().get(1).setDisable(true);
-		lbConversaoConcluida.setVisible(true);
 		btAbrirLocalArquivos.setVisible(true);
 	}
 
@@ -373,15 +372,17 @@ public class ConverterMidiaController implements Initializable {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			String path = System.getProperty("user.home") 
 					+ File.separator + "Documents"
-					+ File.separator + "aljava-portatil"
+					+ File.separator + "Aljava Portátil"
 					+ File.separator + "Minhas Conversões "
 					+ sdf.format(new Date())
 					+ File.separator;
 
 			previousOutputPath = txOutputPath.getText();
 			txOutputPath.setText(path);
+			hbChooseOutputPath.setDisable(true);
 		} else {
 			txOutputPath.setText(previousOutputPath);
+			hbChooseOutputPath.setDisable(false);
 		}
 	}
 

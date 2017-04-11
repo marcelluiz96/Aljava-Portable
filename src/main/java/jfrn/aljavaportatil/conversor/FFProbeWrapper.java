@@ -13,7 +13,12 @@ public class FFProbeWrapper {
 	public File ffProbeLocation;	
 
 	public FFProbeWrapper() {
-		ffProbeLocation = new File("src/main/ffmpeg/ffprobe");
+		//Código para produção
+		//NOTA: Mudar também no FFMPEGWrapper
+		ffProbeLocation = new File("ff/ffprobe");
+
+		//Código para testes
+//		ffProbeLocation = new File("src/main/ff/ffprobe");
 	}
 
 	public FFProbeWrapper(String pathToFFProbe) {

@@ -28,7 +28,7 @@ public class ConverterMidiaApp  extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		stage = primaryStage;
-		stage.setTitle("Utilitário portátil Aljava - JFRN v1.0");
+		stage.setTitle("Aljava Portátil - JFRN v1.0");
 		stage.setResizable(false);
 
 //		this.stage.getIcons().add(new Image("file:resources/images/NetflixLogo.png"));

@@ -3,12 +3,21 @@
 	-fx-background-repeat: no-repeat;
 }
 
+.jfrnbg {
+	-fx-background-image: url("../images/jfrnbg.png");
+	-fx-background-repeat: no-repeat;
+}
+
 #tvMidiasAConverter .table-column {
   -fx-alignment: CENTER;
 }
 
 .title {
 
+}
+
+.vboxoutput {
+	-fx-line
 }
 
 .enviarbt {
@@ -34,9 +43,11 @@
 }
 
 .converterbt {
-	-fx-background-image: url("../icons/videoediting100.png");
+	-fx-background-image: url("../icons/formatfactory.png");
 	-fx-background-repeat: no-repeat;
+	-fx-background-size: 100 100;
     -fx-background-position: center;
+    -fx-background-radius: 0.2em;
 }
 
 .assinarbt {

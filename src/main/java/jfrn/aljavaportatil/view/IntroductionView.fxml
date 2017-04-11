@@ -2,12 +2,13 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="562.0" prefWidth="768.0" styleClass="whitebg" stylesheets="@../../../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfrn.aljavaportatil.view.IntroductionController">
+<AnchorPane prefHeight="562.0" prefWidth="768.0" styleClass="jfrnbg" stylesheets="@../../../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfrn.aljavaportatil.view.IntroductionController">
    <children>
       <Label layoutX="191.0" layoutY="126.0" styleClass="title" text="Aljava - Utilitário portátil">
          <font>
@@ -20,11 +21,17 @@
          </image>
       </ImageView>
       <Label layoutX="227.0" layoutY="540.0" text="v.1.0 - Justiça Federal do RN - Todos os direitos reservados" />
-      <Button fx:id="btConverterAudioVideo" alignment="BOTTOM_CENTER" layoutX="281.0" layoutY="258.0" mnemonicParsing="false" onAction="#onConverterAudioVideoClick" prefHeight="134.0" prefWidth="209.0" styleClass="converterbt" text="Reduzir Áudio/Vídeo" textFill="#1b1b1b">
+      <Button fx:id="btConverterAudioVideo" alignment="BOTTOM_CENTER" layoutX="266.0" layoutY="258.0" mnemonicParsing="false" onAction="#onConverterAudioVideoClick" prefHeight="144.0" prefWidth="235.0" styleClass="converterbt" text="Reduzir Áudio/Vídeo" textFill="#1b1b1b">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
+         <effect>
+            <DropShadow />
+         </effect>
       </Button>
-      <Label layoutX="297.0" layoutY="392.0" prefHeight="102.0" prefWidth="175.0" text="Permite reduzir arquivos de áudio e vídeo, realizando uma compressão e conversão para os formatos mp3 e mp4, respectivamente" textAlignment="CENTER" wrapText="true" />
+      <Label layoutX="298.0" layoutY="412.0" prefHeight="102.0" prefWidth="175.0" text="Permite reduzir arquivos de áudio e vídeo, realizando uma compressão e conversão para os formatos mp3 e mp4, respectivamente" textAlignment="JUSTIFY" wrapText="true">
+         <font>
+            <Font size="13.0" />
+         </font></Label>
    </children>
 </AnchorPane>

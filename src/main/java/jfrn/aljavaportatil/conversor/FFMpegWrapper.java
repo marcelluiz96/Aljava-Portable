@@ -49,7 +49,10 @@ public class FFMpegWrapper {
 	}
 
 	public FFMpegWrapper() {
-		this.pathToFFMpeg = "src/main/ffmpeg/ffmpeg";
+		//Produção
+		this.pathToFFMpeg = "ff/ffmpeg";
+		//Testes
+//		this.pathToFFMpeg = "src/main/ff/ffmpeg";
 	}
 
 
@@ -167,7 +170,7 @@ public class FFMpegWrapper {
 
 		ArrayList<String> params = new ArrayList<String>(); 
 
-		File ffmpegLocation = new File("src/main/ffmpeg/ffmpeg");
+		File ffmpegLocation = new File(pathToFFMpeg);
 		String pathToFFmpeg = ffmpegLocation.getAbsolutePath();
 
 		params.add(pathToFFmpeg); //Caminho para o executável
