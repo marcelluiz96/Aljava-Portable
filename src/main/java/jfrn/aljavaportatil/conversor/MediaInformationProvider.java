@@ -16,6 +16,10 @@ import jfrn.aljavaportatil.model.Midia;
  */
 public class MediaInformationProvider extends FFProbeWrapper{
 	
+	public MediaInformationProvider() throws Exception {
+		super();
+	}
+
 	public static double bytesToMB(Object tamanho) {
 
 		double size;

@@ -96,7 +96,7 @@
          <content>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="jfrnbg">
                <children>
-                  <HBox layoutX="58.0" layoutY="231.0" spacing="8.0">
+                  <HBox fx:id="hbChooseOutputPath" layoutX="58.0" layoutY="231.0" spacing="8.0">
                      <children>
                         <Label prefHeight="31.0" prefWidth="145.0" text="Escolha uma pasta:" wrapText="true">
                            <font>
@@ -119,7 +119,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </CheckBox>
-                  <Button fx:id="btIniciarConversao" layoutX="305.0" layoutY="341.0" mnemonicParsing="false" onAction="#actionIniciarConversao" prefHeight="38.0" prefWidth="206.0" styleClass="greenbt" text="Iniciar conversão">
+                  <Button fx:id="btIniciarConversao" layoutX="348.0" layoutY="339.0" mnemonicParsing="false" onAction="#actionIniciarConversao" prefHeight="38.0" prefWidth="206.0" styleClass="greenbt" text="Iniciar conversão">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
@@ -127,7 +127,7 @@
                         <DropShadow />
                      </effect>
                   </Button>
-                  <Label layoutX="304.0" layoutY="395.0" prefHeight="87.0" prefWidth="208.0" text="Nota: Após o início da conversão, não feche o programa. Se necessário, delete os arquivos convertidos e reinicie a conversão." textAlignment="JUSTIFY" wrapText="true">
+                  <Label layoutX="345.0" layoutY="393.0" prefHeight="87.0" prefWidth="208.0" text="Nota: Após o início da conversão, não feche o programa. Se necessário, delete os arquivos convertidos e reinicie a conversão." textAlignment="JUSTIFY" wrapText="true">
                      <font>
                         <Font size="13.0" />
                      </font>

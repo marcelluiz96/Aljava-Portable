@@ -12,13 +12,15 @@ public class FFProbeWrapper {
 
 	public File ffProbeLocation;	
 
-	public FFProbeWrapper() {
-		//Código para produção
-		//NOTA: Mudar também no FFMPEGWrapper
+	public FFProbeWrapper() throws Exception {
 		ffProbeLocation = new File("ff/ffprobe");
-
-		//Código para testes
-//		ffProbeLocation = new File("src/main/ff/ffprobe");
+//		if (!ffProbeLocation.getAbsoluteFile().exists()) {
+//			//Se não encontrou, assume-se o path de testes
+//			ffProbeLocation = new File("src/main/ff/ffprobe.exe");
+//			if (!ffProbeLocation.getAbsoluteFile().exists())
+//				//Se não encontrou, o ffmpeg não está no caminho correto
+//				throw new Exception("FFMpeg Not found!");
+//		}
 	}
 
 	public FFProbeWrapper(String pathToFFProbe) {

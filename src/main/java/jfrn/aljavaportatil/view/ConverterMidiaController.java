@@ -78,7 +78,7 @@ public class ConverterMidiaController implements Initializable {
 	private final List<String> formatosAudioCompativeis = new ArrayList<String>(Arrays.asList("mp3", "wav", "aac",
 			"flac", "wav", "wma", "ogg"));
 	private final List<String> formatosVideoCompativeis = new ArrayList<String>(Arrays.asList("mp4", "webm", "mkv", "flv"
-			, "vob", "mov", "avi", "wmv", "m4p", "3gp", "mpeg"));
+			, "vob", "mov", "avi", "wmv", "m4p", "3gp", "mpeg", "mpg"));
 
 	FFMpegWrapper ffmpegWrapper;
 	FFProbeWrapper ffprobeWrapper;
@@ -191,7 +191,7 @@ public class ConverterMidiaController implements Initializable {
 	}
 
 	@FXML 
-	private void actionEscolherArquivos() {
+	private void actionEscolherArquivos() throws Exception {
 		FileChooser fileChooser = new FileChooser();
 
 		fileChooser.setTitle("Escolha o arquivo");
@@ -204,7 +204,7 @@ public class ConverterMidiaController implements Initializable {
 				, "*.vob", "*.mov", "*.avi", "*.wmv"
 				,"*.m4p", "*.3gp", "*.mpeg", "*.mp3"
 				, "*.wav", "*.aac","*.flac", "*.wav"
-				, "*.wma", "*.ogg"); 
+				, "*.wma", "*.ogg", "*.mpg"); 
 
 		fileChooser.getExtensionFilters().add(extFilter);
 
@@ -269,7 +269,7 @@ public class ConverterMidiaController implements Initializable {
 	}
 
 	@FXML
-	private void actionIniciarConversao() throws IOException {
+	private void actionIniciarConversao() throws Exception {
 
 		this.tabPane.getSelectionModel().selectNext();
 		ffmpegWrapper = new FFMpegWrapper();
@@ -344,6 +344,10 @@ public class ConverterMidiaController implements Initializable {
 		double progressoTotal = segundosSomaDasConversoes / (double) duracaoTotal;
 
 		pbProgressoConversao.setProgress(progressoTotal);
+		
+		//Tentando mostrar progresso na janela do taskbar
+		
+		
 	}
 
 	@FXML
